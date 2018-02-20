@@ -1,0 +1,6 @@
+/.idea/
+*.pyc
+.coverage
+awslogs-agent-setup.py
+media/*
+

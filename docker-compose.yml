@@ -1,0 +1,36 @@
+version: '2'
+
+services:  
+  # Redis
+  redis:
+    image: redis:2.8.19
+    hostname: redis
+
+  # Django web server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: web
+    command: ./run_web.sh
+    volumes:
+      - .:/app  
+    ports:
+      - "8000:8000"
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  # Celery worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ./run_celery.sh
+    volumes:
+      - .:/app
+    links:
+      - redis
+    depends_on:
+      - redis
